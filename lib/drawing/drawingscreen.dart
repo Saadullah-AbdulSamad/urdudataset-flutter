@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:urdudatasetcollection/thankyou/thankyouscreen.dart';
 
 class DrawingScreen extends StatefulWidget {
-  const DrawingScreen({super.key});
+  const DrawingScreen({super.key, required this.userID});
+  final String userID;
 
   @override
   State<DrawingScreen> createState() => _DrawingBoardState();
@@ -80,14 +82,22 @@ class _DrawingBoardState extends State<DrawingScreen> {
           if (kDebugMode) {
             print("All letters have been written. Here are the stored points:");
           }
-          letterPointsMap.forEach((letter, points) {
-            if (kDebugMode) {
-              print("Letter: $letter, Points: $points");
-            }
-          });
+          // letterPointsMap.forEach((letter, points) {
+          //   if (kDebugMode) {
+          //     print("Letter: $letter, Points: $points");
+          //   }
+          // });
 
           // When all letters are completed, navigate to the thank you screen.
-          Navigator.pushNamed(context, '/Thanks');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ThankyouScreen(
+                data: letterPointsMap,
+                userID: widget.userID,
+              ),
+            ),
+          );
         }
       }
     });

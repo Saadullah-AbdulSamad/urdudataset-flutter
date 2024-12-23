@@ -1,8 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/form/formscreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ThankyouScreen extends StatefulWidget {
-  const ThankyouScreen({super.key});
+  const ThankyouScreen({super.key, required this.data, required this.userID});
+  final Map<String, List<Offset>> data;
+  final String userID;
 
   @override
   State<ThankyouScreen> createState() => _ThankyouScreenState();
@@ -11,12 +15,33 @@ class ThankyouScreen extends StatefulWidget {
 class _ThankyouScreenState extends State<ThankyouScreen> {
   bool drawingComplete = false; // To simulate the drawing completion
   bool isSaving = false; // To simulate saving process
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Function to simulate drawing completion
-  void markDrawingComplete() {
+  Future<void> markDrawingComplete() async {
+    setState(() {
+      isSaving = true; // Start saving process
+    });
+    if (kDebugMode) {
+      print("ID: ${widget.userID}");
+    }
+    try {
+      var convertedData = widget.data.map((title, points) => MapEntry(title,
+          points.map((point) => {"dx": point.dx, "dy": point.dy}).toList()));
+      // Add the map to a Firestore collection
+      await firestore
+          .collection("dataset")
+          .add({"userID": widget.userID, "data": convertedData});
+      if (kDebugMode) {
+        print("Data added successfully!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error adding data: $e");
+      }
+    }
     setState(() {
       drawingComplete = true;
-      isSaving = true; // Start saving process
     });
 
     // Display the thank you message for 2 seconds, then navigate to FormScreen

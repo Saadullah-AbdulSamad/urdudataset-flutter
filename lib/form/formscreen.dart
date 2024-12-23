@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:urdudatasetcollection/drawing/drawingscreen.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -9,8 +10,11 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? _gender, _dominantHand, _writingHand;
-  String? _selectedCountry, _selectedCity, _selectedQualification;
+  String? _gender, _dominantHand = 'Right', _writingHand = 'Right';
+  String registrationNumber = '';
+  String? _selectedCountry = 'Pakistan',
+      _selectedCity,
+      _selectedQualification = 'Undergraduate';
   List<String> _cities = []; // List of cities based on selected country
 
   // Example country and city data
@@ -56,6 +60,25 @@ class _FormScreenState extends State<FormScreen> {
                   },
                 ),
                 TextFormField(
+                  initialValue: registrationNumber,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter your registration number (*)',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your registration number';
+                    }
+                    final regex = RegExp(r'20[12]\d-[a-zA-Z]{2}-\d{3}');
+                    if (!regex.hasMatch(value)) {
+                      return 'Please enter a valid registration number';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    registrationNumber = value;
+                  },
+                ),
+                TextFormField(
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Enter your Age (*)',
@@ -93,8 +116,8 @@ class _FormScreenState extends State<FormScreen> {
                         onChanged: (value) {
                           setState(() {
                             _selectedCountry = value;
-                            _selectedCity =
-                                null; // Reset city when country changes
+                            _selectedCity = countryCities[value]
+                                ?[0]; // Reset city when country changes
                             _cities =
                                 value != null ? countryCities[value]! : [];
                           });
@@ -261,7 +284,14 @@ class _FormScreenState extends State<FormScreen> {
                     // Validate form before navigation
                     if (_formKey.currentState!.validate()) {
                       // All fields are filled, navigate
-                      Navigator.pushNamed(context, '/Writing Screen');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DrawingScreen(
+                            userID: registrationNumber,
+                          ),
+                        ),
+                      );
                     }
                   },
                   child: const Text("Submit"),

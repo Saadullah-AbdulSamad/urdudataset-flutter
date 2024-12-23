@@ -1,11 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:urdudatasetcollection/thankyou/thankyouscreen.dart';
+import 'package:urdudatasetcollection/firebase_options.dart';
 import 'package:urdudatasetcollection/welcomescreen/welcomescreen.dart';
 
-import 'drawing/drawingscreen.dart';
 import 'form/formscreen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures binding is initialized
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform); // Initializes Firebase
   runApp(const MyApp());
 }
 
@@ -22,10 +25,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/Writing Screen': (context) =>
-            const DrawingScreen(), // Route to Writing Screen
-        '/Thanks': (context) =>
-            const ThankyouScreen(), // Route to Writing Screen
         '/FormScreen': (context) =>
             const FormScreen(), // Route to Writing Screen
       },
