@@ -32,8 +32,9 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Urdu Data Collection', style: TextStyle(color: Colors.white)),
-        leading: Icon(Icons.local_florist, color: Colors.white),
+        title: const Text('Urdu Data Collection',
+            style: TextStyle(color: Colors.white)),
+        leading: const Icon(Icons.local_florist, color: Colors.white),
         backgroundColor: Colors.black87,
       ),
       body: SingleChildScrollView(
@@ -74,12 +75,10 @@ class _FormScreenState extends State<FormScreen> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  padding: EdgeInsets.only(left: 38,right: 38),
+                  padding: const EdgeInsets.only(left: 38, right: 38),
                   child: Column(
-
                     children: [
                       const Text('Country', style: TextStyle(fontSize: 15)),
-
                       DropdownButtonFormField<String>(
                         value: _selectedCountry,
                         decoration: const InputDecoration(
@@ -94,8 +93,10 @@ class _FormScreenState extends State<FormScreen> {
                         onChanged: (value) {
                           setState(() {
                             _selectedCountry = value;
-                            _selectedCity = null; // Reset city when country changes
-                            _cities = value != null ? countryCities[value]! : [];
+                            _selectedCity =
+                                null; // Reset city when country changes
+                            _cities =
+                                value != null ? countryCities[value]! : [];
                           });
                         },
                         validator: (value) {
@@ -110,7 +111,7 @@ class _FormScreenState extends State<FormScreen> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  padding: EdgeInsets.only(left: 38,right: 38),
+                  padding: const EdgeInsets.only(left: 38, right: 38),
                   child: Column(
                     children: [
                       const Text('City', style: TextStyle(fontSize: 15)),
@@ -142,10 +143,11 @@ class _FormScreenState extends State<FormScreen> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  padding: EdgeInsets.only(left: 38,right: 38),
+                  padding: const EdgeInsets.only(left: 38, right: 38),
                   child: Column(
                     children: [
-                      const Text('Qualification', style: TextStyle(fontSize: 15)),
+                      const Text('Qualification',
+                          style: TextStyle(fontSize: 15)),
                       DropdownButtonFormField<String>(
                         value: _selectedQualification,
                         decoration: const InputDecoration(
@@ -172,7 +174,6 @@ class _FormScreenState extends State<FormScreen> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 20),
                 const Text('Gender', style: TextStyle(fontSize: 20)),
                 Row(
@@ -254,9 +255,7 @@ class _FormScreenState extends State<FormScreen> {
                     const Text('Left'),
                   ],
                 ),
-
-
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
                     // Validate form before navigation

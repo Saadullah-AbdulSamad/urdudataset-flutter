@@ -1,19 +1,53 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../thankyou/thankyouscreen.dart';
 
 class DrawingScreen extends StatefulWidget {
+  const DrawingScreen({super.key});
+
   @override
-  _DrawingBoardState createState() => _DrawingBoardState();
+  State<DrawingScreen> createState() => _DrawingBoardState();
 }
 
 class _DrawingBoardState extends State<DrawingScreen> {
-  var offset;
   List<Offset> points = []; // List to store points for current drawing.
-  Map<String, List<Offset>> letterPointsMap = {}; // Map to store Urdu letters with their offset values.
+  Map<String, List<Offset>> letterPointsMap =
+      {}; // Map to store Urdu letters with their offset values.
   List<String> urduLetters = [
-    "ا", "ب", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ڈ", "ر", "ڑ", "ز", "ژ", "س",
-    "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن", "ں",
-    "و", "ہ", "ھ", "ی", "ے"
+    "ا",
+    "ب",
+    "ت",
+    "ث",
+    "ج",
+    "چ",
+    "ح",
+    "خ",
+    "د",
+    "ڈ",
+    "ر",
+    "ڑ",
+    "ز",
+    "ژ",
+    "س",
+    "ش",
+    "ص",
+    "ض",
+    "ط",
+    "ظ",
+    "ع",
+    "غ",
+    "ف",
+    "ق",
+    "ک",
+    "گ",
+    "ل",
+    "م",
+    "ن",
+    "ں",
+    "و",
+    "ہ",
+    "ھ",
+    "ی",
+    "ے"
   ];
 
   int currentLetterIndex = 0; // Index of the current letter.
@@ -43,9 +77,13 @@ class _DrawingBoardState extends State<DrawingScreen> {
           showError = false; // Reset error flag if the letter has been drawn.
         } else {
           // Loop through the map and print the contents after the last letter.
-          print("All letters have been written. Here are the stored points:");
+          if (kDebugMode) {
+            print("All letters have been written. Here are the stored points:");
+          }
           letterPointsMap.forEach((letter, points) {
-            print("Letter: $letter, Points: $points");
+            if (kDebugMode) {
+              print("Letter: $letter, Points: $points");
+            }
           });
 
           // When all letters are completed, navigate to the thank you screen.
@@ -61,14 +99,14 @@ class _DrawingBoardState extends State<DrawingScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           // Display current Urdu letter.
           Text(
             urduLetters[currentLetterIndex],
-            style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
           ),
 
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Center(
             child: Container(
               key: _drawingKey,
@@ -80,8 +118,10 @@ class _DrawingBoardState extends State<DrawingScreen> {
               ),
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  RenderBox renderBox = _drawingKey.currentContext!.findRenderObject() as RenderBox;
-                  Offset localPosition = renderBox.globalToLocal(details.globalPosition);
+                  RenderBox renderBox = _drawingKey.currentContext!
+                      .findRenderObject() as RenderBox;
+                  Offset localPosition =
+                      renderBox.globalToLocal(details.globalPosition);
 
                   // Ensure touch is within the container bounds.
                   if (localPosition.dx >= 0 &&
@@ -109,26 +149,27 @@ class _DrawingBoardState extends State<DrawingScreen> {
 
           // Display error message if no drawing is made.
           if (showError)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 'Please draw something before moving to the next letter.',
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),
 
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                child: Text("Reset"),
                 onPressed: resetDrawing,
+                child: const Text("Reset"),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               ElevatedButton(
-                child: Text("Next Letter"),
-                onPressed: points.isEmpty ? null : nextLetter, // Disable button if no points are drawn
+                onPressed: points.isEmpty ? null : nextLetter,
+                child: const Text(
+                    "Next Letter"), // Disable button if no points are drawn
               ),
             ],
           ),

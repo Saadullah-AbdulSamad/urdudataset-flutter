@@ -17,18 +17,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/Writing Screen': (context) => DrawingScreen(), // Route to Writing Screen
-        '/Thanks': (context) => ThankyouScreen(), // Route to Writing Screen
-        '/FormScreen': (context) => FormScreen(), // Route to Writing Screen
+        '/Writing Screen': (context) =>
+            const DrawingScreen(), // Route to Writing Screen
+        '/Thanks': (context) =>
+            const ThankyouScreen(), // Route to Writing Screen
+        '/FormScreen': (context) =>
+            const FormScreen(), // Route to Writing Screen
       },
-
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }
