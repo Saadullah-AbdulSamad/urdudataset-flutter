@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCl7cyO9gpUGs5xnn7Hm04VAdd3ZTFkh0Q',
-    appId: '1:412126387398:android:42133be58940685b080bc7',
+    appId: '1:412126387398:android:da7eb7370e464703080bc7',
     messagingSenderId: '412126387398',
     projectId: 'urdudataset-rcet-cs-21',
     storageBucket: 'urdudataset-rcet-cs-21.firebasestorage.app',
