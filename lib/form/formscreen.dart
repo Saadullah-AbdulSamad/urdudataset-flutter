@@ -14,15 +14,28 @@ class _FormScreenState extends State<FormScreen> {
   String registrationNumber = '';
   String? _selectedCountry = 'Pakistan',
       _selectedCity,
-      _selectedQualification = 'Undergraduate';
+      _selectedQualification = 'Undergraduate',_wordsValue;
   List<String> _cities = []; // List of cities based on selected country
 
   // Example country and city data
   Map<String, List<String>> countryCities = {
-    'Pakistan': ['Lahore', 'Karachi', 'Islamabad'],
-    'India': ['Delhi', 'Mumbai', 'Bangalore'],
-    'USA': ['New York', 'Los Angeles', 'Chicago'],
-    'Canada': ['Toronto', 'Vancouver', 'Montreal'],
+    'Pakistan': [
+      'Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala', 'Bahawalpur', 'Sargodha', 'Sialkot', 'Sheikhupura',
+      'Jhelum', 'Kasur', 'Mianwali', 'Rahim Yar Khan', 'Dera Ghazi Khan', 'Vehari', 'Karachi', 'Hyderabad', 'Sukkur',
+      'Larkana', 'Nawabshah', 'Mirpur Khas', 'Jacobabad', 'Khairpur', 'Peshawar', 'Abbottabad', 'Mardan', 'Swat (Mingora)',
+      'Dera Ismail Khan', 'Kohat', 'Bannu', 'Mansehra', 'Quetta', 'Gwadar', 'Turbat', 'Khuzdar', 'Sibi', 'Lasbela',
+      'Chaman', 'Panjgur', 'Muzaffarabad', 'Mirpur', 'Rawalakot', 'Bagh', 'Kotli', 'Bhimber', 'Gilgit', 'Skardu',
+      'Hunza', 'Chilas', 'Ghanche', 'Islamabad'
+    ],
+    'India': [
+      'Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad', 'Ahmedabad', 'Pune', 'Jaipur', 'Lucknow',
+      'Kanpur', 'Nagpur', 'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 'Patna', 'Vadodara', 'Ghaziabad', 'Ludhiana',
+      'Agra', 'Nashik', 'Faridabad', 'Meerut', 'Rajkot', 'Kalyan', 'Varanasi', 'Srinagar', 'Amritsar', 'Allahabad',
+      'Ranchi', 'Coimbatore', 'Gwalior', 'Jodhpur', 'Chandigarh', 'Guwahati', 'Solapur', 'Hubli-Dharwad', 'Mysore',
+      'Tiruchirappalli', 'Bareilly', 'Aligarh', 'Jalandhar', 'Bhubaneswar', 'Salem', 'Warangal', 'Guntur', 'Bhiwandi'
+    ],
+    'USA': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'],
+    'Canada': ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa', 'Edmonton', 'Quebec City', 'Winnipeg', 'Hamilton', 'Kitchener']
   };
   List<String> qualifications = [
     'High School',
@@ -30,6 +43,10 @@ class _FormScreenState extends State<FormScreen> {
     'Graduate',
     'Postgraduate',
     'PhD'
+  ];List<String> words = [
+    '1 letter',
+    '3 letters',
+    '2 letters',
   ];
 
   @override
@@ -169,6 +186,39 @@ class _FormScreenState extends State<FormScreen> {
                   padding: const EdgeInsets.only(left: 38, right: 38),
                   child: Column(
                     children: [
+                      const Text('Select option (*)',
+                          style: TextStyle(fontSize: 15)),
+                      DropdownButtonFormField<String>(
+                        value: _wordsValue,
+                        decoration: const InputDecoration(
+                          labelText: 'Select one option (*)',
+                        ),
+                        items: words.map((words) {
+                          return DropdownMenuItem<String>(
+                            value: words,
+                            child: Text(words),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _wordsValue = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select your qualification';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.only(left: 38, right: 38),
+                  child: Column(
+                    children: [
                       const Text('Qualification',
                           style: TextStyle(fontSize: 15)),
                       DropdownButtonFormField<String>(
@@ -289,6 +339,7 @@ class _FormScreenState extends State<FormScreen> {
                         MaterialPageRoute(
                           builder: (context) => DrawingScreen(
                             userID: registrationNumber,
+                            words: _wordsValue,
                           ),
                         ),
                       );

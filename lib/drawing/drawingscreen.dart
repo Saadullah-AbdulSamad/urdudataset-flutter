@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/thankyou/thankyouscreen.dart';
 
 class DrawingScreen extends StatefulWidget {
-  const DrawingScreen({super.key, required this.userID});
+  const DrawingScreen({super.key, required this.userID, required this.words});
   final String userID;
+  final String? words;
 
   @override
   State<DrawingScreen> createState() => _DrawingBoardState();
@@ -51,6 +52,40 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "ی",
     "ے"
   ];
+  List<String> urduThreeLetterWords = [
+    "آئی", "آئس", "آقا", "آمد", "آفت", "آلہ", "آلو", "آدم", "آفس", "آخر",
+    "اٹک", "ایک", "اتق", "الت", "الو", "الگ", "امن", "امت", "اہم", "الو",
+    "انکا", "بدن", "بد", "بٹن", "بچ", "بہن", "بج", "بہت", "بند", "بعد",
+    "برج", "بلد", "بہر", "بچت", "پٹ", "پین", "پتہ", "پلک", "پر", "پاک",
+    "پی", "پیم", "چمک", "چپل", "چمن", "چنک", "چلا", "چکن", "چند", "چور",
+    "چون", "چیر", "چیر", "چیل", "چک", "چیک", "چہر", "چرک", "چڑھ", "حلف",
+    "حل", "حر", "حجر", "خوف", "ختم", "خص", "خش", "خاک", "دکن", "درج",
+    "درب", "درخت", "دماغ", "دفتر", "دفن", "دھو", "دھن", "دعا", "دش", "ذخ",
+    "ذق", "ذوق", "رات", "رزق", "رک", "رل", "رہ", "روی", "رے", "روس",
+    "زلف", "زلزلہ", "سا", "سر", "سی", "سو", "سال", "سک", "سوک", "شمس",
+    "شاک", "شر", "شق", "شہر", "شجر", "شہرہ", "شدت", "ضبط", "صبر", "صحف",
+    "صفا", "صوت", "صلح", "صوم", "صدر", "صدق", "صیت", "طب", "طبع", "ظفر",
+    "عقل", "علم", "علی", "عشق", "عمل", "عمر", "عطر", "عہد", "عجز", "غزل",
+    "غلط", "غف", "غیر", "فتح", "فکر", "فن", "فوج", "فضل", "ق", "قضا",
+    "قتل", "کچھ", "کچک", "کشت", "کرم", "کرن", "کلی", "کن", "کود", "کون",
+    "کونک", "کہر", "کوچ", "لکھ", "لمح", "لہر", "لوک", "مال", "مالی", "مدد",
+    "مغرور", "ملک", "مل", "نذر", "نقد", "نگ", "نظر", "نگ", "نگر", "نمک",
+    "نیٹ", "نو", "نون", "نہر", "نور", "ورق", "وق", "وطن", "وق", "ورک",
+    "وسوسہ", "وظیفہ", "یق", "یوں", "یہاں", "یہ", "یو"
+  ];
+  List<String> urduTwoLetterWords = [
+    "آس", "آپ", "آم", "آن", "آہ", "اب", "ابا", "ابو", "ات", "ان", "او",
+    "اک", "اہ", "با", "بر", "بس", "بد", "بھ", "بو", "بی", "پر", "پن",
+    "پو", "پی", "پا", "تا", "تب", "تر", "تو", "ٹپ", "ٹی", "جا", "جب",
+    "جر", "جل", "جو", "جی", "چا", "چھ", "چی", "خد", "خر", "خو", "دا",
+    "در", "دو", "دی", "ڈب", "ڈھ", "ڈو", "را", "رب", "رو", "ری", "زا",
+    "زر", "زی", "سا", "سر", "سو", "سی", "شا", "شر", "شی", "فا", "فر",
+    "فو", "فی", "قا", "قر", "کس", "کہ", "کو", "کی", "لا", "لب", "لو",
+    "لی", "ما", "مر", "مو", "می", "نا", "نب", "نو", "نی", "وا", "وج",
+    "ور", "وہ", "وی", "ہا", "ہر", "ہی", "یہ"
+  ];
+
+
 
   int currentLetterIndex = 0; // Index of the current letter.
   bool showError = false; // Flag to show error when no drawing is made.
@@ -112,7 +147,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
           const SizedBox(height: 40),
           // Display current Urdu letter.
           Text(
-            urduLetters[currentLetterIndex],
+            widget.words == '1 letter' ? urduLetters[currentLetterIndex] : widget.words == '3 letters' ? urduThreeLetterWords[currentLetterIndex] : widget.words=='2 letters'? urduTwoLetterWords[currentLetterIndex]:'',
             style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
           ),
 
