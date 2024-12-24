@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:urdudatasetcollection/form/formscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:urdudatasetcollection/form/formscreen_compact.dart';
 
 class ThankyouScreen extends StatefulWidget {
   const ThankyouScreen({super.key, required this.data, required this.userID});
@@ -52,7 +52,7 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                const FormScreen()), // Replace with your home screen widget
+                const CompactFormScreen()), // Replace with your home screen widget
         (Route<dynamic> route) => false, // This removes all previous routes
       );
     });

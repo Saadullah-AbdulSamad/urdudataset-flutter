@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/firebase_options.dart';
+import 'package:urdudatasetcollection/form/formscreen_compact.dart';
 import 'package:urdudatasetcollection/welcomescreen/welcomescreen.dart';
-
-import 'form/formscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensures binding is initialized
@@ -26,7 +25,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       routes: {
         '/FormScreen': (context) =>
-            const FormScreen(), // Route to Writing Screen
+            const CompactFormScreen(), // Route to Writing Screen
       },
       home: const WelcomeScreen(),
     );

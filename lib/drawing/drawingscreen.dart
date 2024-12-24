@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:math'; // Import the dart:math library
 import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/thankyou/thankyouscreen.dart';
 
@@ -15,6 +15,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
   List<Offset> points = []; // List to store points for current drawing.
   Map<String, List<Offset>> letterPointsMap =
       {}; // Map to store Urdu letters with their offset values.
+
   List<String> urduLetters = [
     "ا",
     "ب",
@@ -52,6 +53,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "ی",
     "ے"
   ];
+
   List<String> urduThreeLetterWords = [
     "آئی",
     "آئس",
@@ -73,13 +75,9 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "امت",
     "اہم",
     "الو",
-    "انکا",
     "بدن",
-    "بد",
     "بٹن",
-    "بچ",
     "بہن",
-    "بج",
     "بہت",
     "بند",
     "بعد",
@@ -87,13 +85,10 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "بلد",
     "بہر",
     "بچت",
-    "پٹ",
     "پین",
     "پتہ",
     "پلک",
-    "پر",
     "پاک",
-    "پی",
     "پیم",
     "چمک",
     "چپل",
@@ -107,58 +102,35 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "چیر",
     "چیر",
     "چیل",
-    "چک",
     "چیک",
     "چہر",
     "چرک",
     "چڑھ",
     "حلف",
-    "حل",
-    "حر",
     "حجر",
     "خوف",
     "ختم",
-    "خص",
-    "خش",
     "خاک",
     "دکن",
     "درج",
     "درب",
-    "درخت",
-    "دماغ",
-    "دفتر",
     "دفن",
     "دھو",
     "دھن",
     "دعا",
-    "دش",
-    "ذخ",
-    "ذق",
     "ذوق",
     "رات",
     "رزق",
-    "رک",
-    "رل",
-    "رہ",
     "روی",
-    "رے",
     "روس",
     "زلف",
-    "زلزلہ",
-    "سا",
-    "سر",
-    "سی",
-    "سو",
     "سال",
     "سک",
     "سوک",
     "شمس",
     "شاک",
-    "شر",
-    "شق",
     "شہر",
     "شجر",
-    "شہرہ",
     "شدت",
     "ضبط",
     "صبر",
@@ -170,7 +142,6 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "صدر",
     "صدق",
     "صیت",
-    "طب",
     "طبع",
     "ظفر",
     "عقل",
@@ -184,14 +155,11 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "عجز",
     "غزل",
     "غلط",
-    "غف",
     "غیر",
     "فتح",
     "فکر",
-    "فن",
     "فوج",
     "فضل",
-    "ق",
     "قضا",
     "قتل",
     "کچھ",
@@ -200,10 +168,8 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "کرم",
     "کرن",
     "کلی",
-    "کن",
     "کود",
     "کون",
-    "کونک",
     "کہر",
     "کوچ",
     "لکھ",
@@ -213,34 +179,22 @@ class _DrawingBoardState extends State<DrawingScreen> {
     "مال",
     "مالی",
     "مدد",
-    "مغرور",
     "ملک",
-    "مل",
     "نذر",
     "نقد",
-    "نگ",
     "نظر",
-    "نگ",
     "نگر",
     "نمک",
     "نیٹ",
-    "نو",
     "نون",
     "نہر",
     "نور",
     "ورق",
-    "وق",
     "وطن",
-    "وق",
     "ورک",
-    "وسوسہ",
-    "وظیفہ",
-    "یق",
     "یوں",
-    "یہاں",
-    "یہ",
-    "یو"
   ];
+
   List<String> urduTwoLetterWords = [
     "آس",
     "آپ",
@@ -344,6 +298,12 @@ class _DrawingBoardState extends State<DrawingScreen> {
 
   final GlobalKey _drawingKey = GlobalKey(); // Key for the drawing container.
 
+  // Random function to select a random word from the given list
+  String rand(List<String> words) {
+    final random = Random();
+    return words[random.nextInt(words.length)];
+  }
+
   void resetDrawing() {
     setState(() {
       points.clear(); // Clear current drawing points.
@@ -371,16 +331,6 @@ class _DrawingBoardState extends State<DrawingScreen> {
           currentLetterIndex++; // Increment only if it's within the bounds of the list.
           showError = false; // Reset error flag if the letter has been drawn.
         } else {
-          // Loop through the map and print the contents after the last letter.
-          if (kDebugMode) {
-            print("All letters have been written. Here are the stored points:");
-          }
-          // letterPointsMap.forEach((letter, points) {
-          //   if (kDebugMode) {
-          //     print("Letter: $letter, Points: $points");
-          //   }
-          // });
-
           // When all letters are completed, navigate to the thank you screen.
           Navigator.push(
             context,
@@ -403,16 +353,35 @@ class _DrawingBoardState extends State<DrawingScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 40),
-          // Display current Urdu letter.
-          Text(
-            '${widget.words == '1 letter' ? urduLetters[currentLetterIndex] : widget.words == '3 letters' ? urduThreeLetterWords[currentLetterIndex] : widget.words == '2 letters' ? urduTwoLetterWords[currentLetterIndex] : ''} لکھیں',
-            style: const TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Nastaleeq',
-            ),
+          // Display current Urdu letter or word.
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                " لکھیں",
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Nastaleeq',
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                widget.words == '1 letter'
+                    ? urduLetters[currentLetterIndex]
+                    : widget.words == '3 letters'
+                        ? rand(urduThreeLetterWords) // Random 3-letter word
+                        : widget.words == '2 letters'
+                            ? rand(urduTwoLetterWords) // Random 2-letter word
+                            : '',
+                style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Nastaleeq',
+                    color: Colors.red),
+              ),
+            ],
           ),
-
           const SizedBox(height: 20),
           Center(
             child: Container(
@@ -453,7 +422,6 @@ class _DrawingBoardState extends State<DrawingScreen> {
               ),
             ),
           ),
-
           // Display error message if no drawing is made.
           if (showError)
             const Padding(
@@ -463,14 +431,13 @@ class _DrawingBoardState extends State<DrawingScreen> {
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),
-
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
                 onPressed: resetDrawing,
-                child: const Text("Reset"),
+                child: const Text("Erase"),
               ),
               const SizedBox(width: 20),
               ElevatedButton(
