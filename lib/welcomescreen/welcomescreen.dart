@@ -21,35 +21,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.black87,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Welcome text placed in the center
           Expanded(
-            child: Container(
-              padding:
-                  EdgeInsets.only(left: MediaQuery.of(context).size.width / 7),
-              child: const Center(
-                child: Text(
-                  'Welcome to Urdu Data Collection',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+            child: Center(
+              child: Text(
+                'Welcome to Urdu Data Collection',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
           ),
-          const Center(
+          Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(
                   Colors.white), // Color of the spinner
             ),
           ),
           // The footer at the bottom
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.all(20.0),
