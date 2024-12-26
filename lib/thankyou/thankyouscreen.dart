@@ -110,7 +110,7 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
                       : Container(),
                   const SizedBox(height: 20),
                   const Text(
-                    "آپ کا اردو حروف کی ڈرائنگ محفوظ ہونے کا انتظار کر رہے ہیں...",
+                    "کیا آپ اپنی خوشخطی محفوظ کرنا چاہتے ہیں؟",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

@@ -16,6 +16,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
   Map<String, List<Offset>> letterPointsMap =
       {}; // Map to store Urdu letters with their offset values.
 
+  List<String> wordsDone = [];
   List<String> urduLetters = [
     "ا",
     "ب",
@@ -317,20 +318,41 @@ class _DrawingBoardState extends State<DrawingScreen> {
         // If no points are drawn, show error message.
         showError = true;
       } else {
+        List<String> words = [
+          'Single alphabet words',
+          'Double alphabet words',
+          'Triple alphabet words',
+        ];
         // Store the current letter's points in the map.
-        letterPointsMap[widget.words == '1 letter'
+        letterPointsMap[widget.words == 'Single alphabet words'
             ? urduLetters[currentLetterIndex]
-            : widget.words == '3 letters'
+            : widget.words == 'Triple alphabet words'
                 ? urduThreeLetterWords[currentLetterIndex]
-                : widget.words == '2 letters'
+                : widget.words == 'Double alphabet words'
                     ? urduTwoLetterWords[currentLetterIndex]
                     : ''] = List.from(points);
+        if(widget.words == 'Double alphabet words')wordsDone.add(urduTwoLetterWords[currentLetterIndex]);
+        if(widget.words == 'Triple alphabet words')wordsDone.add(urduThreeLetterWords[currentLetterIndex]);
         points.clear(); // Clear current points for the next letter.
 
-        if (currentLetterIndex < urduLetters.length - 1) {
+        if (widget.words == 'Single alphabet words' && currentLetterIndex < urduLetters.length - 1) {
           currentLetterIndex++; // Increment only if it's within the bounds of the list.
           showError = false; // Reset error flag if the letter has been drawn.
         } else {
+          if(widget.words == 'Double alphabet words' && wordsDone.length <= urduTwoLetterWords.length){
+            var proposedStr = rand(urduTwoLetterWords);
+            while(wordsDone.contains(proposedStr)){
+              proposedStr = rand(urduTwoLetterWords);
+            }
+            currentLetterIndex = urduTwoLetterWords.indexOf(proposedStr);
+          } else{
+
+            if(widget.words == 'Triple alphabet words' && wordsDone.length <= urduThreeLetterWords.length){
+              var proposedStr = rand(urduThreeLetterWords);
+              while(wordsDone.contains(proposedStr)){
+                proposedStr = rand(urduThreeLetterWords);
+              }
+              currentLetterIndex = urduThreeLetterWords.indexOf(proposedStr);}else{
           // When all letters are completed, navigate to the thank you screen.
           Navigator.push(
             context,
@@ -341,7 +363,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
               ),
             ),
           );
-        }
+        }}}
       }
     });
   }
@@ -367,12 +389,12 @@ class _DrawingBoardState extends State<DrawingScreen> {
                 ),
               ),
               Text(
-                widget.words == '1 letter'
+                widget.words == 'Single alphabet words'
                     ? urduLetters[currentLetterIndex]
-                    : widget.words == '3 letters'
-                        ? rand(urduThreeLetterWords) // Random 3-letter word
-                        : widget.words == '2 letters'
-                            ? rand(urduTwoLetterWords) // Random 2-letter word
+                    : widget.words == 'Triple alphabet words'
+                        ? urduThreeLetterWords[currentLetterIndex] // Random 3-letter word
+                        : widget.words == 'Double alphabet words'
+                            ? urduTwoLetterWords[currentLetterIndex] // Random 2-letter word
                             : '',
                 style: const TextStyle(
                     fontSize: 50,
@@ -446,7 +468,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
                     "Next Letter"), // Disable button if no points are drawn
               ),
               const SizedBox(width: 20),
-              currentLetterIndex > 9 && widget.words != '1 letter'
+              wordsDone.length > 9 && widget.words != 'Single alphabet words'
                   ? ElevatedButton(
                       onPressed: points.isEmpty
                           ? () {
