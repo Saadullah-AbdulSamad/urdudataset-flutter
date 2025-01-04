@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/drawing/drawingscreen.dart';
 
@@ -38,6 +40,7 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Urdu Data Collection',
@@ -53,7 +56,7 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
               borderRadius: BorderRadius.circular(20),
               color: Colors.white,
             ),
-            margin: const EdgeInsets.all(100),
+            margin: EdgeInsets.all(min(screenSize.width / 10, 100)),
             padding: const EdgeInsets.all(30),
             width: MediaQuery.of(context).size.width * 0.8,
             child: Form(
@@ -98,10 +101,12 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
                     },
                     child: TextFormField(
                       controller: regNumberController,
-                      decoration: const InputDecoration(
-                        labelText: 'Enter your registration number (*)',
+                      decoration: InputDecoration(
+                        labelText: screenSize.width / 10 < 40
+                            ? 'Enter your Reg#'
+                            : 'Enter your registration number (*)',
                         hintText: '2021-bscs-433',
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
