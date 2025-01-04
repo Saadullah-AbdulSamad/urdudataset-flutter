@@ -16,7 +16,11 @@ class _DrawingBoardState extends State<DrawingScreen> {
   List<int> stamps = [];
   Map<String, List<DataPoint>> letterPointsMap =
       {}; // Map to store Urdu letters with their data values.
-
+  List<String> words2 = [
+    'Single alphabet words',
+    'Double alphabet words',
+    'Triple alphabet words',
+  ];
   List<String> wordsDone = [];
   List<String> urduLetters = [
     "ا",
@@ -306,6 +310,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
     return words[random.nextInt(words.length)];
   }
 
+  late String? words1 = widget.words;
   void resetDrawing() {
     setState(() {
       dataEntries.clear(); // Clear current drawing points.
@@ -327,27 +332,27 @@ class _DrawingBoardState extends State<DrawingScreen> {
         }
 
         // Store the current letter's points in the map.
-        letterPointsMap[widget.words == 'Single alphabet words'
+        letterPointsMap[words1 == 'Single alphabet words'
             ? urduLetters[currentLetterIndex]
-            : widget.words == 'Triple alphabet words'
+            : words1 == 'Triple alphabet words'
                 ? urduThreeLetterWords[currentLetterIndex]
-                : widget.words == 'Double alphabet words'
+                : words1 == 'Double alphabet words'
                     ? urduTwoLetterWords[currentLetterIndex]
                     : ''] = List.from(dataEntries);
-        if (widget.words == 'Double alphabet words') {
+        if (words1 == 'Double alphabet words') {
           wordsDone.add(urduTwoLetterWords[currentLetterIndex]);
         }
-        if (widget.words == 'Triple alphabet words') {
+        if (words1 == 'Triple alphabet words') {
           wordsDone.add(urduThreeLetterWords[currentLetterIndex]);
         }
         dataEntries.clear(); // Clear current points for the next letter.
 
-        if (widget.words == 'Single alphabet words' &&
+        if (words1 == 'Single alphabet words' &&
             currentLetterIndex < urduLetters.length - 1) {
           currentLetterIndex++; // Increment only if it's within the bounds of the list.
           showError = false; // Reset error flag if the letter has been drawn.
         } else {
-          if (widget.words == 'Double alphabet words' &&
+          if (words1 == 'Double alphabet words' &&
               wordsDone.length <= urduTwoLetterWords.length) {
             var proposedStr = rand(urduTwoLetterWords);
             while (wordsDone.contains(proposedStr)) {
@@ -355,7 +360,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
             }
             currentLetterIndex = urduTwoLetterWords.indexOf(proposedStr);
           } else {
-            if (widget.words == 'Triple alphabet words' &&
+            if (words1 == 'Triple alphabet words' &&
                 wordsDone.length <= urduThreeLetterWords.length) {
               var proposedStr = rand(urduThreeLetterWords);
               while (wordsDone.contains(proposedStr)) {
@@ -376,6 +381,22 @@ class _DrawingBoardState extends State<DrawingScreen> {
             }
           }
         }
+      }
+    });
+  }
+
+  void resetIndexForWords(String? selectedWords) {
+    setState(() {
+      // Reset the current letter index based on the selected word type
+      if (selectedWords == 'Single alphabet words') {
+        currentLetterIndex =
+            0; // Reset to first index for single alphabet words
+      } else if (selectedWords == 'Double alphabet words') {
+        currentLetterIndex =
+            0; // Reset to first index for double alphabet words
+      } else if (selectedWords == 'Triple alphabet words') {
+        currentLetterIndex =
+            0; // Reset to first index for triple alphabet words
       }
     });
   }
@@ -401,12 +422,12 @@ class _DrawingBoardState extends State<DrawingScreen> {
                 ),
               ),
               Text(
-                widget.words == 'Single alphabet words'
+                words1 == 'Single alphabet words'
                     ? urduLetters[currentLetterIndex]
-                    : widget.words == 'Triple alphabet words'
+                    : words1 == 'Triple alphabet words'
                         ? urduThreeLetterWords[
                             currentLetterIndex] // Random 3-letter word
-                        : widget.words == 'Double alphabet words'
+                        : words1 == 'Double alphabet words'
                             ? urduTwoLetterWords[
                                 currentLetterIndex] // Random 2-letter word
                             : '',
@@ -473,40 +494,65 @@ class _DrawingBoardState extends State<DrawingScreen> {
               ),
             ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: resetDrawing,
-                child: const Text("Erase"),
+              ListTile(
+                leading: ElevatedButton(
+                  onPressed: resetDrawing,
+                  child: const Text("Erase"),
+                ),
+                trailing: wordsDone.length > 9 &&
+                    words1 != 'Single alphabet words'
+                    ? ElevatedButton(
+                        onPressed: dataEntries.isEmpty
+                            ? () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ThankyouScreen(
+                                        data: letterPointsMap,
+                                        userID: widget.userID),
+                                  ),
+                                );
+                              }
+                            : null,
+                        child: const Text(
+                            "Finish"), // Disable button if no points are drawn
+                      )
+                    : const Text(''),
+                subtitle:
+                DropdownButtonFormField<String>(
+                  value: words1,
+                  decoration: const InputDecoration(
+                    labelText: 'Select one option (*)',
+                  ),
+                  items: words2.map((words) {
+                    return DropdownMenuItem<String>(
+                      value: words,
+                      child: Text(words),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      words1 = value;
+                      resetIndexForWords(words1);
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select your qualification';
+                    }
+                    return null;
+                  },
+                ),),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: ElevatedButton(
+                  onPressed: dataEntries.isEmpty ? null : nextLetter,
+                  child: const Text(
+                      "Next Letter"), // Disable button if no points are drawn
+                ),
               ),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: dataEntries.isEmpty ? null : nextLetter,
-                child: const Text(
-                    "Next Letter"), // Disable button if no points are drawn
-              ),
-              const SizedBox(width: 20),
-              wordsDone.length > 9 && widget.words != 'Single alphabet words'
-                  ? ElevatedButton(
-                      onPressed: dataEntries.isEmpty
-                          ? () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ThankyouScreen(
-                                      data: letterPointsMap,
-                                      userID: widget.userID),
-                                ),
-                              );
-                            }
-                          : null,
-                      child: const Text(
-                          "Finish"), // Disable button if no points are drawn
-                    )
-                  : const Text(''),
-            ],
-          ),
+
+
         ],
       ),
     );
