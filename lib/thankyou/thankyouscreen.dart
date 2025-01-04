@@ -62,8 +62,8 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
       drawingComplete = true;
     });
 
-    // Display the thank you message for 2 seconds, then navigate to FormScreen
-    Future.delayed(const Duration(seconds: 2), () {
+    // Display the thank you message for 10 seconds, then navigate to FormScreen
+    Future.delayed(const Duration(seconds: 10), () {
       // Navigate to FormScreen and remove all previous screens from the stack
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
@@ -77,6 +77,12 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    markDrawingComplete();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -84,79 +90,45 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
         backgroundColor: Colors.black87,
       ),
       body: Center(
-        child: drawingComplete
-            ? const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                    size: 100.0,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "تمام اردو حروف کامیابی کے ساتھ محفوظ ہو گئے ہیں!",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                      fontFamily: 'Nastaleeq',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "شکریہ! آپ کی محنت کا شکریہ ادا کرتے ہیں",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                      fontFamily: 'Nastaleeq',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isSaving
-                      ? const CircularProgressIndicator(
-                          color: Colors.black87,
-                        )
-                      : Container(),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "کیا آپ اپنی خوشخطی محفوظ کرنا چاہتے ہیں؟",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                      fontFamily: 'Nastaleeq',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: markDrawingComplete,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 15),
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    child: const Text(
-                      "محفوظ کریں",
-                      style: TextStyle(
-                        fontFamily: 'Nastaleeq',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-      ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          drawingComplete
+              ? const Icon(
+                  Icons.check_circle_outline,
+                  color: Colors.green,
+                  size: 100.0,
+                )
+              : const CircularProgressIndicator(
+                  color: Colors.black87,
+                ),
+          const SizedBox(height: 20),
+          const Text(
+            "آپ کی پر خلوص کاوش کا شکریہ",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
+              fontFamily: 'Nastaleeq',
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            !drawingComplete
+                ? "آپ کی خوشخطی کو محفوظ کیا جا رہا ہے۔۔۔"
+                : "آپ کی خوشخطی محفوظ کر لی گئی ہے۔",
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.blueAccent,
+              fontFamily: 'Nastaleeq',
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      )),
     );
   }
 }
