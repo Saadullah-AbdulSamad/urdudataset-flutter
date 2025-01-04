@@ -32,8 +32,11 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
     super.initState();
 
     // Set a default value for _wordsValue (can be any value from the 'words' list)
-    _wordsValue = words.isNotEmpty ? words[0] : null; // Set to first item as default
+    _wordsValue =
+        words.isNotEmpty ? words[0] : null; // Set to first item as default
   }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -120,8 +123,6 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
                         value: _wordsValue,
                         decoration: const InputDecoration(
                           labelText: 'Select one option (*)',
-
-
                         ),
                         items: words.map((words) {
                           return DropdownMenuItem<String>(

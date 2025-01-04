@@ -494,65 +494,62 @@ class _DrawingBoardState extends State<DrawingScreen> {
               ),
             ),
           const SizedBox(height: 20),
-              ListTile(
-                leading: ElevatedButton(
-                  onPressed: resetDrawing,
-                  child: const Text("Erase"),
-                ),
-                trailing: wordsDone.length > 9 &&
-                    words1 != 'Single alphabet words'
-                    ? ElevatedButton(
-                        onPressed: dataEntries.isEmpty
-                            ? () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ThankyouScreen(
-                                        data: letterPointsMap,
-                                        userID: widget.userID),
-                                  ),
-                                );
-                              }
-                            : null,
-                        child: const Text(
-                            "Finish"), // Disable button if no points are drawn
-                      )
-                    : const Text(''),
-                subtitle:
-                DropdownButtonFormField<String>(
-                  value: words1,
-                  decoration: const InputDecoration(
-                    labelText: 'Select one option (*)',
-                  ),
-                  items: words2.map((words) {
-                    return DropdownMenuItem<String>(
-                      value: words,
-                      child: Text(words),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      words1 = value;
-                      resetIndexForWords(words1);
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select your qualification';
-                    }
-                    return null;
-                  },
-                ),),
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: ElevatedButton(
-                  onPressed: dataEntries.isEmpty ? null : nextLetter,
-                  child: const Text(
-                      "Next Letter"), // Disable button if no points are drawn
-                ),
+          ListTile(
+            leading: ElevatedButton(
+              onPressed: resetDrawing,
+              child: const Text("Erase"),
+            ),
+            trailing: wordsDone.length > 9 && words1 != 'Single alphabet words'
+                ? ElevatedButton(
+                    onPressed: dataEntries.isEmpty
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ThankyouScreen(
+                                    data: letterPointsMap,
+                                    userID: widget.userID),
+                              ),
+                            );
+                          }
+                        : null,
+                    child: const Text(
+                        "Finish"), // Disable button if no points are drawn
+                  )
+                : const Text(''),
+            subtitle: DropdownButtonFormField<String>(
+              value: words1,
+              decoration: const InputDecoration(
+                labelText: 'Select one option (*)',
               ),
-
-
+              items: words2.map((words) {
+                return DropdownMenuItem<String>(
+                  value: words,
+                  child: Text(words),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  words1 = value;
+                  resetIndexForWords(words1);
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select your qualification';
+                }
+                return null;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: ElevatedButton(
+              onPressed: dataEntries.isEmpty ? null : nextLetter,
+              child: const Text(
+                  "Next Letter"), // Disable button if no points are drawn
+            ),
+          ),
         ],
       ),
     );
