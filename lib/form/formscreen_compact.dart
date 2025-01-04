@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/drawing/drawingscreen.dart';
 
-enum inputType {
-  singleChar, doubleChar, tripleChar
-}
-
 class CompactFormScreen extends StatefulWidget {
   const CompactFormScreen({super.key});
 
@@ -102,7 +98,8 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your registration number';
                         }
-                        final regex = RegExp(r'20[12]\d-[a-zA-Z]{2}|[a-zA-Z]{4}-\d{3}');
+                        final regex =
+                            RegExp(r'20[12]\d-[a-zA-Z]{2}|[a-zA-Z]{4}-\d{3}');
                         if (!regex.hasMatch(value)) {
                           return 'Please enter a valid registration number';
                         }
@@ -111,41 +108,37 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    child: Column(
-                      children: [
-
-                        DropdownButtonFormField<String>(
-                          value: _wordsValue,
-                          decoration: const InputDecoration(
-                            labelText: 'Select one option (*)',
-                          ),
-                          items: words.map((words) {
-                            return DropdownMenuItem<String>(
-                              value: words,
-                              child: Text(words),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _wordsValue = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select your qualification';
-                            }
-                            return null;
-                          },
+                  Column(
+                    children: [
+                      DropdownButtonFormField<String>(
+                        value: _wordsValue,
+                        decoration: const InputDecoration(
+                          labelText: 'Select one option (*)',
                         ),
-                      ],
-                    ),
+                        items: words.map((words) {
+                          return DropdownMenuItem<String>(
+                            value: words,
+                            child: Text(words),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _wordsValue = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select your qualification';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(Colors.black87),
+                      backgroundColor: WidgetStateProperty.all(Colors.black87),
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {

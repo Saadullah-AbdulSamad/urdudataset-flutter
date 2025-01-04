@@ -12,9 +12,10 @@ class DrawingScreen extends StatefulWidget {
 }
 
 class _DrawingBoardState extends State<DrawingScreen> {
-  List<Offset> points = []; // List to store points for current drawing.
-  Map<String, List<Offset>> letterPointsMap =
-      {}; // Map to store Urdu letters with their offset values.
+  List<DataPoint> dataEntries = []; // List to store points for current drawing.
+  List<int> stamps = [];
+  Map<String, List<DataPoint>> letterPointsMap =
+      {}; // Map to store Urdu letters with their data values.
 
   List<String> wordsDone = [];
   List<String> urduLetters = [
@@ -307,22 +308,24 @@ class _DrawingBoardState extends State<DrawingScreen> {
 
   void resetDrawing() {
     setState(() {
-      points.clear(); // Clear current drawing points.
+      dataEntries.clear(); // Clear current drawing points.
       showError = false; // Reset error flag when the drawing is reset.
     });
   }
 
   void nextLetter() {
     setState(() {
-      if (points.isEmpty) {
+      if (dataEntries.isEmpty) {
         // If no points are drawn, show error message.
         showError = true;
       } else {
-        List<String> words = [
-          'Single alphabet words',
-          'Double alphabet words',
-          'Triple alphabet words',
-        ];
+        dataEntries.sort((a, b) => a.temporal.compareTo(b.temporal));
+
+        final firstStamp = dataEntries[0].temporal;
+        for (int i = 0; i < dataEntries.length; i++) {
+          dataEntries[i].temporal = dataEntries[i].temporal - firstStamp;
+        }
+
         // Store the current letter's points in the map.
         letterPointsMap[widget.words == 'Single alphabet words'
             ? urduLetters[currentLetterIndex]
@@ -330,40 +333,49 @@ class _DrawingBoardState extends State<DrawingScreen> {
                 ? urduThreeLetterWords[currentLetterIndex]
                 : widget.words == 'Double alphabet words'
                     ? urduTwoLetterWords[currentLetterIndex]
-                    : ''] = List.from(points);
-        if(widget.words == 'Double alphabet words')wordsDone.add(urduTwoLetterWords[currentLetterIndex]);
-        if(widget.words == 'Triple alphabet words')wordsDone.add(urduThreeLetterWords[currentLetterIndex]);
-        points.clear(); // Clear current points for the next letter.
+                    : ''] = List.from(dataEntries);
+        if (widget.words == 'Double alphabet words') {
+          wordsDone.add(urduTwoLetterWords[currentLetterIndex]);
+        }
+        if (widget.words == 'Triple alphabet words') {
+          wordsDone.add(urduThreeLetterWords[currentLetterIndex]);
+        }
+        dataEntries.clear(); // Clear current points for the next letter.
 
-        if (widget.words == 'Single alphabet words' && currentLetterIndex < urduLetters.length - 1) {
+        if (widget.words == 'Single alphabet words' &&
+            currentLetterIndex < urduLetters.length - 1) {
           currentLetterIndex++; // Increment only if it's within the bounds of the list.
           showError = false; // Reset error flag if the letter has been drawn.
         } else {
-          if(widget.words == 'Double alphabet words' && wordsDone.length <= urduTwoLetterWords.length){
+          if (widget.words == 'Double alphabet words' &&
+              wordsDone.length <= urduTwoLetterWords.length) {
             var proposedStr = rand(urduTwoLetterWords);
-            while(wordsDone.contains(proposedStr)){
+            while (wordsDone.contains(proposedStr)) {
               proposedStr = rand(urduTwoLetterWords);
             }
             currentLetterIndex = urduTwoLetterWords.indexOf(proposedStr);
-          } else{
-
-            if(widget.words == 'Triple alphabet words' && wordsDone.length <= urduThreeLetterWords.length){
+          } else {
+            if (widget.words == 'Triple alphabet words' &&
+                wordsDone.length <= urduThreeLetterWords.length) {
               var proposedStr = rand(urduThreeLetterWords);
-              while(wordsDone.contains(proposedStr)){
+              while (wordsDone.contains(proposedStr)) {
                 proposedStr = rand(urduThreeLetterWords);
               }
-              currentLetterIndex = urduThreeLetterWords.indexOf(proposedStr);}else{
-          // When all letters are completed, navigate to the thank you screen.
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ThankyouScreen(
-                data: letterPointsMap,
-                userID: widget.userID,
-              ),
-            ),
-          );
-        }}}
+              currentLetterIndex = urduThreeLetterWords.indexOf(proposedStr);
+            } else {
+              // When all letters are completed, navigate to the thank you screen.
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ThankyouScreen(
+                    data: letterPointsMap,
+                    userID: widget.userID,
+                  ),
+                ),
+              );
+            }
+          }
+        }
       }
     });
   }
@@ -392,9 +404,11 @@ class _DrawingBoardState extends State<DrawingScreen> {
                 widget.words == 'Single alphabet words'
                     ? urduLetters[currentLetterIndex]
                     : widget.words == 'Triple alphabet words'
-                        ? urduThreeLetterWords[currentLetterIndex] // Random 3-letter word
+                        ? urduThreeLetterWords[
+                            currentLetterIndex] // Random 3-letter word
                         : widget.words == 'Double alphabet words'
-                            ? urduTwoLetterWords[currentLetterIndex] // Random 2-letter word
+                            ? urduTwoLetterWords[
+                                currentLetterIndex] // Random 2-letter word
                             : '',
                 style: const TextStyle(
                     fontSize: 50,
@@ -427,18 +441,23 @@ class _DrawingBoardState extends State<DrawingScreen> {
                       localPosition.dy >= 0 &&
                       localPosition.dy <= renderBox.size.height) {
                     setState(() {
-                      points.add(localPosition);
+                      dataEntries.add(DataPoint(
+                          spatial: localPosition,
+                          temporal: DateTime.now().millisecondsSinceEpoch));
                     });
                   }
                 },
                 onPanEnd: (details) {
                   setState(() {
-                    points.add(Offset.zero); // Add separator for strokes.
+                    dataEntries.add(DataPoint(
+                        spatial: Offset.zero,
+                        temporal: DateTime.now().millisecondsSinceEpoch));
                   });
                 },
                 child: ClipRect(
                   child: CustomPaint(
-                    painter: DrawingPainter(points),
+                    painter: DrawingPainter(
+                        dataEntries.map((entry) => entry.spatial).toList()),
                   ),
                 ),
               ),
@@ -463,14 +482,14 @@ class _DrawingBoardState extends State<DrawingScreen> {
               ),
               const SizedBox(width: 20),
               ElevatedButton(
-                onPressed: points.isEmpty ? null : nextLetter,
+                onPressed: dataEntries.isEmpty ? null : nextLetter,
                 child: const Text(
                     "Next Letter"), // Disable button if no points are drawn
               ),
               const SizedBox(width: 20),
               wordsDone.length > 9 && widget.words != 'Single alphabet words'
                   ? ElevatedButton(
-                      onPressed: points.isEmpty
+                      onPressed: dataEntries.isEmpty
                           ? () {
                               Navigator.push(
                                 context,

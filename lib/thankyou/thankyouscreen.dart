@@ -3,9 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:urdudatasetcollection/form/formscreen_compact.dart';
 
+class DataPoint {
+  final Offset spatial;
+  int temporal;
+
+  DataPoint({required this.spatial, required this.temporal});
+}
+
 class ThankyouScreen extends StatefulWidget {
-  const ThankyouScreen({super.key, required this.data, required this.userID});
-  final Map<String, List<Offset>> data;
+  const ThankyouScreen({
+    super.key,
+    required this.data,
+    required this.userID,
+  });
+  final Map<String, List<DataPoint>> data;
   final String userID;
 
   @override
@@ -26,12 +37,19 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
       print("ID: ${widget.userID}");
     }
     try {
-      var convertedData = widget.data.map((title, points) => MapEntry(title,
-          points.map((point) => {"dx": point.dx, "dy": point.dy}).toList()));
+      var convertedData = widget.data.map((title, points) => MapEntry(
+          title,
+          points
+              .map((point) => {
+                    "dx": point.spatial.dx,
+                    "dy": point.spatial.dy,
+                    "timestamp": point.temporal
+                  })
+              .toList()));
       // Add the map to a Firestore collection
       await firestore
           .collection("dataset")
-          .add({"userID": widget.userID, "data": convertedData});
+          .add({"userID": widget.userID, "version": 2, "data": convertedData});
       if (kDebugMode) {
         print("Data added successfully!");
       }
@@ -112,7 +130,7 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
                   const Text(
                     "کیا آپ اپنی خوشخطی محفوظ کرنا چاہتے ہیں؟",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.blueAccent,
                       fontFamily: 'Nastaleeq',
