@@ -16,11 +16,7 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
   final TextEditingController regNumberController = TextEditingController();
   String? _wordsValue;
 
-  List<String> words = [
-    'Single alphabet words',
-    'Double alphabet words',
-    'Triple alphabet words',
-  ];
+
 
   @override
   void dispose() {
@@ -32,11 +28,10 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
   @override
   void initState() {
     super.initState();
+  }
 
     // Set a default value for _wordsValue (can be any value from the 'words' list)
-    _wordsValue =
-        words.isNotEmpty ? words[0] : null; // Set to first item as default
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,33 +117,7 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Column(
-                    children: [
-                      DropdownButtonFormField<String>(
-                        value: _wordsValue,
-                        decoration: const InputDecoration(
-                          labelText: 'Select one option (*)',
-                        ),
-                        items: words.map((words) {
-                          return DropdownMenuItem<String>(
-                            value: words,
-                            child: Text(words),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _wordsValue = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select your qualification';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
+
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ButtonStyle(
@@ -161,7 +130,6 @@ class _CompactFormScreenState extends State<CompactFormScreen> {
                           MaterialPageRoute(
                             builder: (context) => DrawingScreen(
                               userID: regNumberController.text,
-                              words: _wordsValue,
                             ),
                           ),
                         );

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:urdudatasetcollection/thankyou/thankyouscreen.dart';
 
 class DrawingScreen extends StatefulWidget {
-  const DrawingScreen({super.key, required this.userID, required this.words});
+  const DrawingScreen({super.key, required this.userID});
   final String userID;
-  final String? words;
 
   @override
   State<DrawingScreen> createState() => _DrawingBoardState();
@@ -16,287 +15,13 @@ class _DrawingBoardState extends State<DrawingScreen> {
   List<int> stamps = [];
   Map<String, List<DataPoint>> letterPointsMap =
       {}; // Map to store Urdu letters with their data values.
-  List<String> words2 = [
-    'Single alphabet words',
-    'Double alphabet words',
-    'Triple alphabet words',
-  ];
+  String words2 =
+    'Single alphabet words';
   List<String> wordsDone = [];
   List<String> urduLetters = [
-    "ا",
-    "ب",
-    "ت",
-    "ث",
-    "ج",
-    "چ",
-    "ح",
-    "خ",
-    "د",
-    "ڈ",
-    "ر",
-    "ڑ",
-    "ز",
-    "ژ",
-    "س",
-    "ش",
-    "ص",
-    "ض",
-    "ط",
-    "ظ",
-    "ع",
-    "غ",
-    "ف",
-    "ق",
-    "ک",
-    "گ",
-    "ل",
-    "م",
-    "ن",
-    "ں",
-    "و",
-    "ہ",
-    "ھ",
-    "ی",
-    "ے"
-  ];
-
-  List<String> urduThreeLetterWords = [
-    "آئی",
-    "آئس",
-    "آقا",
-    "آمد",
-    "آفت",
-    "آلہ",
-    "آلو",
-    "آدم",
-    "آفس",
-    "آخر",
-    "اٹک",
-    "ایک",
-    "اتق",
-    "الت",
-    "الو",
-    "الگ",
-    "امن",
-    "امت",
-    "اہم",
-    "الو",
-    "بدن",
-    "بٹن",
-    "بہن",
-    "بہت",
-    "بند",
-    "بعد",
-    "برج",
-    "بلد",
-    "بہر",
-    "بچت",
-    "پین",
-    "پتہ",
-    "پلک",
-    "پاک",
-    "پیم",
-    "چمک",
-    "چپل",
-    "چمن",
-    "چنک",
-    "چلا",
-    "چکن",
-    "چند",
-    "چور",
-    "چون",
-    "چیر",
-    "چیر",
-    "چیل",
-    "چیک",
-    "چہر",
-    "چرک",
-    "چڑھ",
-    "حلف",
-    "حجر",
-    "خوف",
-    "ختم",
-    "خاک",
-    "دکن",
-    "درج",
-    "درب",
-    "دفن",
-    "دھو",
-    "دھن",
-    "دعا",
-    "ذوق",
-    "رات",
-    "رزق",
-    "روی",
-    "روس",
-    "زلف",
-    "سال",
-    "سک",
-    "سوک",
-    "شمس",
-    "شاک",
-    "شہر",
-    "شجر",
-    "شدت",
-    "ضبط",
-    "صبر",
-    "صحف",
-    "صفا",
-    "صوت",
-    "صلح",
-    "صوم",
-    "صدر",
-    "صدق",
-    "صیت",
-    "طبع",
-    "ظفر",
-    "عقل",
-    "علم",
-    "علی",
-    "عشق",
-    "عمل",
-    "عمر",
-    "عطر",
-    "عہد",
-    "عجز",
-    "غزل",
-    "غلط",
-    "غیر",
-    "فتح",
-    "فکر",
-    "فوج",
-    "فضل",
-    "قضا",
-    "قتل",
-    "کچھ",
-    "کچک",
-    "کشت",
-    "کرم",
-    "کرن",
-    "کلی",
-    "کود",
-    "کون",
-    "کہر",
-    "کوچ",
-    "لکھ",
-    "لمح",
-    "لہر",
-    "لوک",
-    "مال",
-    "مالی",
-    "مدد",
-    "ملک",
-    "نذر",
-    "نقد",
-    "نظر",
-    "نگر",
-    "نمک",
-    "نیٹ",
-    "نون",
-    "نہر",
-    "نور",
-    "ورق",
-    "وطن",
-    "ورک",
-    "یوں",
-  ];
-
-  List<String> urduTwoLetterWords = [
-    "آس",
-    "آپ",
-    "آم",
-    "آن",
-    "آہ",
-    "اب",
-    "ابا",
-    "ابو",
-    "ات",
-    "ان",
-    "او",
-    "اک",
-    "اہ",
-    "با",
-    "بر",
-    "بس",
-    "بد",
-    "بھ",
-    "بو",
-    "بی",
-    "پر",
-    "پن",
-    "پو",
-    "پی",
-    "پا",
-    "تا",
-    "تب",
-    "تر",
-    "تو",
-    "ٹپ",
-    "ٹی",
-    "جا",
-    "جب",
-    "جر",
-    "جل",
-    "جو",
-    "جی",
-    "چا",
-    "چھ",
-    "چی",
-    "خد",
-    "خر",
-    "خو",
-    "دا",
-    "در",
-    "دو",
-    "دی",
-    "ڈب",
-    "ڈھ",
-    "ڈو",
-    "را",
-    "رب",
-    "رو",
-    "ری",
-    "زا",
-    "زر",
-    "زی",
-    "سا",
-    "سر",
-    "سو",
-    "سی",
-    "شا",
-    "شر",
-    "شی",
-    "فا",
-    "فر",
-    "فو",
-    "فی",
-    "قا",
-    "قر",
-    "کس",
-    "کہ",
-    "کو",
-    "کی",
-    "لا",
-    "لب",
-    "لو",
-    "لی",
-    "ما",
-    "مر",
-    "مو",
-    "می",
-    "نا",
-    "نب",
-    "نو",
-    "نی",
-    "وا",
-    "وج",
-    "ور",
-    "وہ",
-    "وی",
-    "ہا",
-    "ہر",
-    "ہی",
-    "یہ"
+    "خربوزہ",
+    "خط",
+    "خبری"
   ];
 
   int currentLetterIndex = 0; // Index of the current letter.
@@ -310,7 +35,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
     return words[random.nextInt(words.length)];
   }
 
-  late String? words1 = widget.words;
+  late String? words1 = words2;
   void resetDrawing() {
     setState(() {
       dataEntries.clear(); // Clear current drawing points.
@@ -318,69 +43,50 @@ class _DrawingBoardState extends State<DrawingScreen> {
     });
   }
 
+  int currentRepetition = 0; // Counter for repetitions of the current word
+
   void nextLetter() {
     setState(() {
       if (dataEntries.isEmpty) {
-        // If no points are drawn, show error message.
+        // If no points are drawn, show an error message.
         showError = true;
       } else {
         dataEntries.sort((a, b) => a.temporal.compareTo(b.temporal));
-
         final firstStamp = dataEntries[0].temporal;
-        for (int i = 0; i < dataEntries.length; i++) {
-          dataEntries[i].temporal = dataEntries[i].temporal - firstStamp;
+
+        for (var entry in dataEntries) {
+          entry.temporal -= firstStamp;
         }
 
-        // Store the current letter's points in the map.
-        letterPointsMap[words1 == 'Single alphabet words'
-            ? urduLetters[currentLetterIndex]
-            : words1 == 'Triple alphabet words'
-                ? urduThreeLetterWords[currentLetterIndex]
-                : words1 == 'Double alphabet words'
-                    ? urduTwoLetterWords[currentLetterIndex]
-                    : ''] = List.from(dataEntries);
-        if (words1 == 'Double alphabet words') {
-          wordsDone.add(urduTwoLetterWords[currentLetterIndex]);
+        // Store the current letter's points in the map
+        if (!letterPointsMap.containsKey(urduLetters[currentLetterIndex])) {
+          letterPointsMap[urduLetters[currentLetterIndex]] = [];
         }
-        if (words1 == 'Triple alphabet words') {
-          wordsDone.add(urduThreeLetterWords[currentLetterIndex]);
-        }
-        dataEntries.clear(); // Clear current points for the next letter.
+        letterPointsMap[urduLetters[currentLetterIndex]]!.addAll(dataEntries);
 
-        if (words1 == 'Single alphabet words' &&
-            currentLetterIndex < urduLetters.length - 1) {
-          currentLetterIndex++; // Increment only if it's within the bounds of the list.
-          showError = false; // Reset error flag if the letter has been drawn.
-        } else {
-          if (words1 == 'Double alphabet words' &&
-              wordsDone.length <= urduTwoLetterWords.length) {
-            var proposedStr = rand(urduTwoLetterWords);
-            while (wordsDone.contains(proposedStr)) {
-              proposedStr = rand(urduTwoLetterWords);
-            }
-            currentLetterIndex = urduTwoLetterWords.indexOf(proposedStr);
+        dataEntries.clear(); // Clear the current points for the next drawing
+        currentRepetition++; // Increment the repetition counter
+
+        if (currentRepetition >= 5) {
+          // If the current word is completed 5 times, move to the next word
+          currentRepetition = 0; // Reset the repetition counter
+          if (currentLetterIndex < urduLetters.length - 1) {
+            currentLetterIndex++; // Move to the next word
           } else {
-            if (words1 == 'Triple alphabet words' &&
-                wordsDone.length <= urduThreeLetterWords.length) {
-              var proposedStr = rand(urduThreeLetterWords);
-              while (wordsDone.contains(proposedStr)) {
-                proposedStr = rand(urduThreeLetterWords);
-              }
-              currentLetterIndex = urduThreeLetterWords.indexOf(proposedStr);
-            } else {
-              // When all letters are completed, navigate to the thank you screen.
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ThankyouScreen(
-                    data: letterPointsMap,
-                    userID: widget.userID,
-                  ),
+            // When all words are completed, navigate to the thank you screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ThankyouScreen(
+                  data: letterPointsMap,
+                  userID: widget.userID,
                 ),
-              );
-            }
+              ),
+            );
           }
         }
+
+        showError = false; // Reset the error flag
       }
     });
   }
@@ -422,15 +128,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
                 ),
               ),
               Text(
-                words1 == 'Single alphabet words'
-                    ? urduLetters[currentLetterIndex]
-                    : words1 == 'Triple alphabet words'
-                        ? urduThreeLetterWords[
-                            currentLetterIndex] // Random 3-letter word
-                        : words1 == 'Double alphabet words'
-                            ? urduTwoLetterWords[
-                                currentLetterIndex] // Random 2-letter word
-                            : '',
+                urduLetters[currentLetterIndex],
                 style: const TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
@@ -517,30 +215,7 @@ class _DrawingBoardState extends State<DrawingScreen> {
                         "Finish"), // Disable button if no points are drawn
                   )
                 : const Text(''),
-            subtitle: DropdownButtonFormField<String>(
-              value: words1,
-              decoration: const InputDecoration(
-                labelText: 'Select one option (*)',
-              ),
-              items: words2.map((words) {
-                return DropdownMenuItem<String>(
-                  value: words,
-                  child: Text(words),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  words1 = value;
-                  resetIndexForWords(words1);
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select your qualification';
-                }
-                return null;
-              },
-            ),
+
           ),
           Padding(
             padding: const EdgeInsets.all(18.0),
