@@ -16,7 +16,7 @@ class ThankyouScreen extends StatefulWidget {
     required this.data,
     required this.userID,
   });
-  final Map<String, List<DataPoint>> data;
+  final Map<String, List<List<DataPoint>>> data;
   final String userID;
 
   @override
@@ -37,15 +37,20 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
       print("ID: ${widget.userID}");
     }
     try {
-      var convertedData = widget.data.map((title, points) => MapEntry(
+      var convertedData = widget.data.map((title, pointsList) => MapEntry(
           title,
-          points
-              .map((point) => {
-                    "dx": point.spatial.dx,
-                    "dy": point.spatial.dy,
-                    "timestamp": point.temporal
-                  })
-              .toList()));
+          pointsList.asMap().entries.map((entry) {
+            return {
+              'index': entry.key,
+              'data': entry.value.map((point) {
+                return {
+                  "dx": point.spatial.dx,
+                  "dy": point.spatial.dy,
+                  "timestamp": point.temporal
+                };
+              }).toList()
+            };
+          }).toList()));
       // Add the map to a Firestore collection
       await firestore
           .collection("dataset")

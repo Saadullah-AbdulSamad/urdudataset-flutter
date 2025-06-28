@@ -13,16 +13,11 @@ class DrawingScreen extends StatefulWidget {
 class _DrawingBoardState extends State<DrawingScreen> {
   List<DataPoint> dataEntries = []; // List to store points for current drawing.
   List<int> stamps = [];
-  Map<String, List<DataPoint>> letterPointsMap =
+  Map<String, List<List<DataPoint>>> letterPointsMap =
       {}; // Map to store Urdu letters with their data values.
-  String words2 =
-    'Single alphabet words';
+  String words2 = 'Single alphabet words';
   List<String> wordsDone = [];
-  List<String> urduLetters = [
-    "خربوزہ",
-    "خط",
-    "خبری"
-  ];
+  List<String> urduLetters = ["خربوزہ", "خط", "خبری"];
 
   int currentLetterIndex = 0; // Index of the current letter.
   bool showError = false; // Flag to show error when no drawing is made.
@@ -62,7 +57,8 @@ class _DrawingBoardState extends State<DrawingScreen> {
         if (!letterPointsMap.containsKey(urduLetters[currentLetterIndex])) {
           letterPointsMap[urduLetters[currentLetterIndex]] = [];
         }
-        letterPointsMap[urduLetters[currentLetterIndex]]!.addAll(dataEntries);
+        letterPointsMap[urduLetters[currentLetterIndex]]!
+            .add(List.from(dataEntries));
 
         dataEntries.clear(); // Clear the current points for the next drawing
         currentRepetition++; // Increment the repetition counter
@@ -215,7 +211,6 @@ class _DrawingBoardState extends State<DrawingScreen> {
                         "Finish"), // Disable button if no points are drawn
                   )
                 : const Text(''),
-
           ),
           Padding(
             padding: const EdgeInsets.all(18.0),
