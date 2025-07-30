@@ -5,7 +5,8 @@ This directory contains the Urdu handwriting dataset and a compilation tool. The
 ## 📁 Directory Contents
 
 - **`dataset.zip`** - The compiled Urdu handwriting dataset containing individual JSON files for each word
-- **`urdu-dataset-access-key.json`** - Firebase service account key for accessing the Firestore database (read-only)
+- **`urdu-dataset-access-key.zip`** - Encrypted ZIP file containing the Firebase service account key for accessing the Firestore database (read-only).
+  > **Password:** `P@ssw0rd`
 - **`urdu_dataset_compiler.ipynb`** - Jupyter notebook for extracting and compiling the dataset from Firebase
 
 ## 📊 Dataset Overview
